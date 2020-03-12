@@ -1,0 +1,108 @@
+<ion-header no-border>
+  <ion-navbar color="brightSkyBlue">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <img class="center-logo" [src]="themeService.navbarLogoUrl" [ngClass]="{'center-logo-ios': isIOS() }">
+    <ion-buttons right>
+      <button ion-button icon-only go-adding-device>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <empty-devices *ngIf="_deviceList.length == 0" empty-status></empty-devices>
+  <ion-card *ngFor="let deviceItem of _deviceList">
+    <ion-card-content>
+      <div class="popit-title" margin-bottom>
+        <ion-grid class="toggle-grid">
+          <ion-row class="none-padding">
+            <ion-card-title
+              [ngClass]="{'update-money': deviceItem?.isMoneyChange,'update-gift': !deviceItem?.isMoneyChange && deviceItem?.isGiftChange }"
+              (click)="toggleDetails(deviceItem)">
+              {{ deviceItem?.DevName }}
+              <font class="popit-sub-title" *ngIf="!deviceItem.showDetails">▼</font>
+              <font class="popit-sub-title" *ngIf="deviceItem.showDetails">▲</font>
+            </ion-card-title>
+            <ion-icon class="popit-fab" color="secondary" name="ios-link" *ngIf="deviceItem.Online"></ion-icon>
+            <ion-icon class="popit-fab" color="grey" name="ios-link" *ngIf="!deviceItem.Online"></ion-icon>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div class="popit-content" *ngIf="!deviceItem.showDetails">
+        <ion-grid class="toggle-grid">
+          <ion-row align-items-center>
+            <ion-col class="none-padding">
+              <h2>前次檢測時間: {{ deviceItem?.H61 }}</h2>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div class="popit-content" *ngIf="deviceItem.showDetails">
+        <ion-grid class="toggle-grid">
+          <ion-row align-items-center>
+            <ion-col col-8 class="none-padding">
+              <h2>巡檢正常:</h2>
+            </ion-col>
+            <ion-col col-4 class="toggle-items none-padding">
+              <button ion-button class="full-button" round icon-left color="primary" (click)="clearBank()"
+                [disabled]="!deviceItem.Online">
+                正常
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row align-items-center>
+            <ion-col col-8 class="none-padding">
+              <h2 [ngClass]="{'update-money': deviceItem?.updateMoney}">即時檢測:</h2>
+            </ion-col>
+            <ion-col col-4 class="toggle-items none-padding">
+              <button ion-button class="full-button" round icon-left color="primary" (click)="clearMoney(deviceItem)"
+                [disabled]="!deviceItem.Online">
+                啟動
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row align-items-center>
+            <ion-col col-4 class="toggle-items none-padding">
+              <button ion-button class="full-button" round icon-left color="primary"
+                (click)="getGiftTimeList(deviceItem)">
+                查詢前次檢測結果
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row align-items-center>
+            <ion-col class="none-padding">
+              <h2>每天定時檢測時間: {{ deviceItem?.H60 }}</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row align-items-center>
+            <ion-col class="none-padding">
+              <h2>前次檢測時間: {{ deviceItem?.H61 }}</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row align-items-center>
+            <ion-col class="none-padding">
+              <h2>資訊更新時間: {{ deviceItem?.H62 }}</h2>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div class="control-item-divider"></div>
+        <div class="popit-other-items">
+          <button [ngStyle]="{ 'width':'48%' }" ion-button class="other-item" color="warmGrey" round
+            (click)="showInfo(deviceItem)">
+            版本資訊
+          </button>
+          <button [ngStyle]="{ 'width':'48%' }" ion-button class="danger-other-item" round icon-left color="danger"
+            (click)="deleteDeviceConfirm(deviceItem)" margin-vertical>
+            <ion-icon name="close"></ion-icon>
+            刪除裝置
+          </button>
+        </div>
+      </div>      
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<div *ngIf="!isLoggedIn" class="init-mask"></div>

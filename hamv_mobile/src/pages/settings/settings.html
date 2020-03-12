@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar color="brightSkyBlue">
+    <ion-buttons left>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'SETTINGS.SETTINGS' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="page-spaces" ion-fixed>
+    <span class="section-text">一般</span>
+    <ion-item>
+      <ion-label color="primary">
+        <p>
+          <b>離線推播通知</b>
+        </p>
+      </ion-label>
+      <ion-toggle color="primary" item-right [(ngModel)]="userSetting.isCoinSound" name="coinSoundToggle" (ngModelChange)="setSetting()"></ion-toggle>
+    </ion-item>
+   
+    <span class="section-text">{{ 'SETTINGS.ACCOUNT' | translate }}</span>
+  
+    <button ion-button color="warningRed" full round (click)="logout()" margin-top>
+      {{ 'SETTINGS.LOG_OUT' | translate }}
+    </button>
+    <div class="footer">
+      <span class="section-text">雲極通智聯團隊開發 <a href="http://www.cectco.com">http://www.cectco.com</a></span>
+    </div>
+  </div>
+</ion-content>
